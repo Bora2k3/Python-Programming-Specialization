@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 
 
 class Base(ABC):
-
     def __init__(self, data, result):
         self.data = data
         self.result = result
@@ -13,8 +12,7 @@ class Base(ABC):
 
     def get_score(self):
         ans = self.get_answer()
-        return sum([int(x == y)
-                   for (x, y) in zip(ans, self.result)]) / len(ans)
+        return sum([int(x == y) for x, y in zip(ans, self.result)]) / len(ans)
 
     @abstractmethod
     def get_loss(self):
@@ -24,24 +22,23 @@ class Base(ABC):
 class A(Base):
 
     def get_loss(self):
-        return sum([(x - y) * (x - y)
-                   for (x, y) in zip(self.data, self.result)])
+        return sum([(x - y) * (x - y) for x, y in zip(self.data, self.result)])
 
 
 class B(Base):
 
     def get_loss(self):
         return -sum([y * math.log(x) + (1 - y) * math.log(1 - x)
-                    for (x, y) in zip(self.data, self.result)])
+                     for x, y in zip(self.data, self.result)])
 
     def get_pre(self):
         ans = self.get_answer()
-        res = [int(x == 1 and y == 1) for (x, y) in zip(ans, self.result)]
+        res = [int(x == 1 and y == 1) for x, y in zip(ans, self.result)]
         return sum(res) / sum(ans)
 
     def get_rec(self):
         ans = self.get_answer()
-        res = [int(x == 1 and y == 1) for (x, y) in zip(ans, self.result)]
+        res = [int(x == 1 and y == 1) for x, y in zip(ans, self.result)]
         return sum(res) / sum(self.result)
 
     def get_score(self):
@@ -53,4 +50,4 @@ class B(Base):
 class C(Base):
 
     def get_loss(self):
-        return sum([abs(x - y) for (x, y) in zip(self.data, self.result)])
+        return sum([abs(x - y) for x, y in zip(self.data, self.result)])
